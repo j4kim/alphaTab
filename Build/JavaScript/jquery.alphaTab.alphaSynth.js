@@ -437,19 +437,21 @@
                 // calculate position of whole music wheet within the scroll parent
                 var scrollElement = $(context.cursorOptions.scrollElement);
                 var scrollElementOffset = scrollElement.offset();
-                var elementOffset = element.offset();
-                elementOffset = {
-                    top: elementOffset.top - scrollElementOffset.top,
-                    left: elementOffset.left - scrollElementOffset.left,
-                };
+                // var elementOffset = element.offset();
+                // elementOffset = {
+                //     top: elementOffset.top - scrollElementOffset.top,
+                //     left: elementOffset.left - scrollElementOffset.left,
+                // };
+                var elementOffset = scrollElementOffset
                 if(context.cursorOptions.autoScroll == 'vertical') {
-                    var scrollTop = elementOffset.top + barBoundings.RealBounds.Y;
-                    if(context.cursorOptions.scrollOffset.length) {
-                        scrollTop += context.cursorOptions.scrollOffset[1];
-                    }
-                    else if(context.cursorOptions.scrollOffset) {
-                        scrollTop += context.cursorOptions.scrollOffset;                        
-                    }
+                    var scrollTop = beatBoundings.RealBounds.Y - elementOffset.top;
+                    // var scrollTop = elementOffset.top + barBoundings.RealBounds.Y;
+                    // if(context.cursorOptions.scrollOffset.length) {
+                    //     scrollTop += context.cursorOptions.scrollOffset[1];
+                    // }
+                    // else if(context.cursorOptions.scrollOffset) {
+                    //     scrollTop += context.cursorOptions.scrollOffset;                        
+                    // }
                     if(scrollTop != context.cursorOptions.lastScroll) {
                         context.cursorOptions.lastScroll = scrollTop;
                         $(context.cursorOptions.scrollElement).animate({
