@@ -527,8 +527,9 @@
         if(element.data('alphaSynthCursor')) { return; }
         element.data('alphaSynthCursor', true);
                 
-        var defaults = $.extend({}, cursorOptionsDefaults);                
-        context.cursorOptions = $.extend(defaults, options);
+        //var defaults = $.extend({}, cursorOptionsDefaults);
+        //context.cursorOptions = $.extend(defaults, options);
+        context.cursorOptions = $.extend(cursorOptionsDefaults, options);
         
         var scrollOffset = element.data("player-offset");
         if(scrollOffset) {
