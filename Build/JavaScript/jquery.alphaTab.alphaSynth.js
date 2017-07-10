@@ -437,11 +437,12 @@
                 // calculate position of whole music wheet within the scroll parent
                 var scrollElement = $(context.cursorOptions.scrollElement);
                 var scrollElementOffset = scrollElement.offset();
-                var elementOffset = element.offset();
-                elementOffset = {
-                    top: elementOffset.top - scrollElementOffset.top,
-                    left: elementOffset.left - scrollElementOffset.left,
-                };
+                // var elementOffset = element.offset();
+                // elementOffset = {
+                //     top: elementOffset.top - scrollElementOffset.top,
+                //     left: elementOffset.left - scrollElementOffset.left,
+                // };
+                var elementOffset = scrollElementOffset;
                 if(context.cursorOptions.autoScroll == 'vertical') {
                     var scrollTop = elementOffset.top + barBoundings.RealBounds.Y;
                     if(context.cursorOptions.scrollOffset.length) {
