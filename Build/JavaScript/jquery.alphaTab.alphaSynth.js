@@ -433,6 +433,7 @@
                     left: nextBeatX + 'px'
                 }, duration, 'linear');
             }
+        }
 
             if (!selecting) {
 
@@ -494,7 +495,6 @@
                     }
                 }
             }
-        }
 
         // trigger an event for others to indicate which beat/bar is played
         context.TriggerEvent('playedBeatChanged', beat);
