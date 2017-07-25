@@ -1240,6 +1240,7 @@ AlphaTab.Platform.JavaScript.JsWorkerApi.prototype = {
                 this.Renderer.Load(b, this.TrackIndexes);
             }), $CreateAnonymousDelegate(this, function (e){
                 console.error(e);
+                throw new TypeError("Unable to read file");
             }));
         }
         else {
@@ -1456,6 +1457,7 @@ AlphaTab.Platform.JavaScript.JsApi.prototype = {
                 this.ScoreLoaded(s, true);
             }), $CreateAnonymousDelegate(this, function (e){
                 console.error(e);
+                throw new TypeError("Unable to read file");
             }));
         }
     },
