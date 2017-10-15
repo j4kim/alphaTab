@@ -122,23 +122,6 @@ namespace AlphaTab.Platform.CSharp.Wpf
 
         #endregion
 
-        #region ScoreHeight
-
-        public static readonly DependencyProperty ScoreHeightProperty = DependencyProperty.Register("ScoreHeight", typeof(int), typeof(AlphaTab), new PropertyMetadata(0, OnScoreHeightChanged));
-
-        private static void OnScoreHeightChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            ((AlphaTab)d).InvalidateTracks(true);
-        }
-
-        public int ScoreHeight
-        {
-            get { return (int)GetValue(ScoreHeightProperty); }
-            set { SetValue(ScoreHeightProperty, value); }
-        }
-
-        #endregion
-
         #region ScoreAutoSize
 
         public bool ScoreAutoSize
@@ -249,7 +232,7 @@ namespace AlphaTab.Platform.CSharp.Wpf
 
         public string RenderEngine
         {
-            get { return (string) GetValue(RenderEngineProperty); }
+            get { return (string)GetValue(RenderEngineProperty); }
             set { SetValue(RenderEngineProperty, value); }
         }
 
@@ -325,7 +308,6 @@ namespace AlphaTab.Platform.CSharp.Wpf
                 var settings = Renderer.Settings;
                 settings.Width = width;
                 settings.Engine = RenderEngine;
-                settings.Height = ScoreHeight;
                 settings.Scale = Scale;
                 settings.Layout.Mode = LayoutMode;
                 settings.StretchForce = StretchForce;
@@ -338,7 +320,7 @@ namespace AlphaTab.Platform.CSharp.Wpf
 
                 Task.Factory.StartNew(() =>
                 {
-                    Renderer.RenderMultiple(trackArray);
+                    Renderer.Render(trackArray[0].Score, trackArray.Select(t => t.Index).ToArray());
                 });
             }
             else
@@ -417,7 +399,7 @@ namespace AlphaTab.Platform.CSharp.Wpf
             }
         }
 
-#region RenderFinished
+        #region RenderFinished
 
         public static readonly RoutedEvent RenderFinishedEvent = EventManager.RegisterRoutedEvent("RenderFinished", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(AlphaTab));
         public event RoutedEventHandler RenderFinished
@@ -432,7 +414,7 @@ namespace AlphaTab.Platform.CSharp.Wpf
             RaiseEvent(newEventArgs);
         }
 
-#endregion
+        #endregion
 
     }
 }

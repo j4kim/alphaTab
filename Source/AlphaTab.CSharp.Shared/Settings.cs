@@ -15,14 +15,14 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library.
  */
-using System;
-
-namespace AlphaTab.IO
+namespace AlphaTab
 {
-    public class FileLoadException : Exception
+    /// <summary>
+    /// This public class contains instance specific settings for alphaTab
+    /// </summary>
+    public partial class Settings
     {
-        public FileLoadException(string message)
-            : base(message)
+        private static void SetDefaults(Settings settings)
         {
         }
     }

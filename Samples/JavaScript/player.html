@@ -28,18 +28,15 @@
     <link rel="stylesheet" href="support/demo.css" />
     <style type="text/css">
     .barCursor { /* Defines the color of the bar background when a bar is played */
-        opacity: 0.25;
-        background:#FFF200;
+        background: rgba(255, 242, 0, 0.25);
     }
 
     .selectionWrapper div { /* Defines the color of the selection background */
-        opacity: 0.1;
-        background:#4040FF;
+        background: rgba(64, 64, 255, 0.1)
     }
 
     .beatCursor { /* Defines the beat cursor */
-        opacity: 0.75;
-        background:#4040FF;
+        background: rgba(64, 64, 255, 0.75)
     }
     
     .atHighlight * { /* Defines the color of the music symbols when they are being played (svg) */
@@ -111,6 +108,7 @@
               </ul>
             </li>
             <li><a href="#" id="looping" class="glyphicon glyphicon-refresh"></a></li>
+            <li><a href="#" id="metronome" class="glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="bottom" title="Metronome"></a></li>
            
           </ul>
           <ul class="nav navbar-nav navbar-right">
@@ -168,6 +166,7 @@
             $('#playPause').prop('disabled', false).removeAttr('disabled');            
             $('#stop').prop('disabled', false).removeAttr('disabled');            
             $('#looping').prop('disabled', false).removeAttr('disabled');            
+            $('#metronome').prop('disabled', false).removeAttr('disabled');            
             updateControls();
         });
         at.on('alphaTab.playerStateChanged', function() {
@@ -202,6 +201,19 @@
             }
             else {
                 $('#looping').closest('li').removeClass('active');
+            }
+        });
+        
+        $('#metronome').click(function(e) {
+            e.preventDefault();
+            var metronomeVolume = at.alphaTab('metronomeVolume');
+            if(metronomeVolume == 0) {
+                at.alphaTab('metronomeVolume', 1);
+                $('#metronome').closest('li').addClass('active');
+            }
+            else {
+                at.alphaTab('metronomeVolume', 0);
+                $('#metronome').closest('li').removeClass('active');
             }
         });
         

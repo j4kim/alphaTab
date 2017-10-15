@@ -527,7 +527,7 @@ namespace AlphaTab.Rendering
 
             PaintFingering(canvas, beat, cx + X + beatLineX, direction, fingeringY);
 
-            if (beat.Duration == Duration.Whole || beat.Duration == Duration.DoubleWhole)
+            if (beat.Duration == Duration.Whole || beat.Duration == Duration.DoubleWhole || beat.Duration == Duration.QuadrupleWhole)
             {
                 return;
             }
@@ -850,7 +850,7 @@ namespace AlphaTab.Rendering
         private void CreateTimeSignatureGlyphs()
         {
             AddPreBeatGlyph(new SpacingGlyph(0, 0, 5 * Scale));
-            AddPreBeatGlyph(new TimeSignatureGlyph(0, GetScoreY(2), Bar.MasterBar.TimeSignatureNumerator, Bar.MasterBar.TimeSignatureDenominator, Bar.MasterBar.TimeSignatureCommon));
+            AddPreBeatGlyph(new ScoreTimeSignatureGlyph(0, GetScoreY(2), Bar.MasterBar.TimeSignatureNumerator, Bar.MasterBar.TimeSignatureDenominator, Bar.MasterBar.TimeSignatureCommon));
         }
 
         private void CreateVoiceGlyphs(Voice v)

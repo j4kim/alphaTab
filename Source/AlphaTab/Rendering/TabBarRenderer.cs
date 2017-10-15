@@ -33,10 +33,15 @@ namespace AlphaTab.Rendering
 
         public const float LineSpacing = 10;
 
+        public bool ShowTimeSignature { get; set; }
+        public bool ShowRests { get; set; }
+        public bool ShowTiedNotes { get; set; }
+
         public TabBarRenderer(ScoreRenderer renderer, Bar bar)
             : base(renderer, bar)
         {
             RhythmHeight = 15 * renderer.Layout.Scale;
+            RhythmBeams = true;
         }
 
         public float LineOffset
@@ -103,12 +108,35 @@ namespace AlphaTab.Rendering
                 AddPreBeatGlyph(new TabClefGlyph(5 * Scale, GetTabY(center)));
             }
 
+            // Time Signature
+            if (ShowTimeSignature && 
+                ((Bar.PreviousBar == null) || (Bar.PreviousBar != null && Bar.MasterBar.TimeSignatureNumerator != Bar.PreviousBar.MasterBar.TimeSignatureNumerator) || (Bar.PreviousBar != null && Bar.MasterBar.TimeSignatureDenominator != Bar.PreviousBar.MasterBar.TimeSignatureDenominator)))
+            {
+                CreateStartSpacing();
+                CreateTimeSignatureGlyphs();
+            }
+
             AddPreBeatGlyph(new BarNumberGlyph(0, GetTabY(-0.5f), Bar.Index + 1));
 
             if (Bar.IsEmpty)
             {
                 AddPreBeatGlyph(new SpacingGlyph(0, 0, 30 * Scale));
             }
+        }
+
+        private bool _startSpacing;
+
+        private void CreateStartSpacing()
+        {
+            if (_startSpacing) return;
+            AddPreBeatGlyph(new SpacingGlyph(0, 0, 2 * Scale));
+            _startSpacing = true;
+        }
+
+        private void CreateTimeSignatureGlyphs()
+        {
+            AddPreBeatGlyph(new SpacingGlyph(0, 0, 5 * Scale));
+            AddPreBeatGlyph(new TabTimeSignatureGlyph(0, GetTabY(0), Bar.MasterBar.TimeSignatureNumerator, Bar.MasterBar.TimeSignatureDenominator, Bar.MasterBar.TimeSignatureCommon));
         }
 
         protected override void CreateBeatGlyphs()
@@ -275,7 +303,7 @@ namespace AlphaTab.Rendering
                 : Resources.SecondaryGlyphColor;
 
             // check if we need to paint simple footer
-            if (h.Beats.Count == 1 || RhythmBeams)
+            if (h.Beats.Count == 1 || !RhythmBeams)
             {
                 PaintFooter(cx, cy, canvas, h);
             }
@@ -422,10 +450,11 @@ namespace AlphaTab.Rendering
         {
             foreach (var beat in h.Beats)
             {
-                if (beat.Duration == Duration.Whole || beat.Duration == Duration.DoubleWhole)
+                if (beat.Duration == Duration.Whole || beat.Duration == Duration.DoubleWhole || beat.Duration == Duration.QuadrupleWhole)
                 {
-                    continue;
+                    return;
                 }
+
 
                 //
                 // draw line 
@@ -462,10 +491,13 @@ namespace AlphaTab.Rendering
                 //
                 // Draw beam 
                 //
-                var glyph = new BeamGlyph(0, 0, beat.Duration, BeamDirection.Down, false);
-                glyph.Renderer = this;
-                glyph.DoLayout();
-                glyph.Paint(cx + X + beatLineX, y2, canvas);
+                if (beat.Duration > Duration.Quarter)
+                {
+                    var glyph = new BeamGlyph(0, 0, beat.Duration, BeamDirection.Down, false);
+                    glyph.Renderer = this;
+                    glyph.DoLayout();
+                    glyph.Paint(cx + X + beatLineX, y2, canvas);
+                }
             }
         }
 
