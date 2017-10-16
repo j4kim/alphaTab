@@ -1,4 +1,4 @@
-var $StaticConstructors = [];
+qvar $StaticConstructors = [];
 var $StaticConstructor = function(f) { 
     $StaticConstructors.push(f);  
 };  
@@ -549,6 +549,13 @@ AlphaSynth.Main.AlphaSynthWebWorker.prototype = {
             case "alphaSynth.resetChannelStates":
                 this._player.ResetChannelStates();
                 break;
+            case "get_TempoChanges":
+                this._main.postMessage({
+                    cmd: "returnTempoChanges",
+                    tempoChanges: this._player._sequencer._tempoChanges,
+                    endTime: this._player._sequencer._endTime
+                });
+                break;
         }
     },
     OnPositionChanged: function (sender, e){
@@ -932,10 +939,18 @@ AlphaSynth.Main.AlphaSynthWebWorkerApi.prototype = {
             program: program
         });
     },
+    get_TempoChanges: function(){
+        this._synth.postMessage({
+            cmd: "get_TempoChanges"
+        });
+    },
     HandleWorkerMessage: function (e){
         var data = e.data;
         var cmd = data["cmd"];
         switch (cmd){
+            case "returnTempoChanges":
+                this.TriggerEvent("tempoChanges", [data]);
+                break;
             case "alphaSynth.ready":
                 this._workerIsReady = true;
                 this.CheckReady();
