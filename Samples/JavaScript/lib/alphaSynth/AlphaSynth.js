@@ -1,4 +1,4 @@
-qvar $StaticConstructors = [];
+var $StaticConstructors = [];
 var $StaticConstructor = function(f) { 
     $StaticConstructors.push(f);  
 };  
