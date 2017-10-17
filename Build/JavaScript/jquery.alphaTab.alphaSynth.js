@@ -621,6 +621,7 @@
         // Click Handling
         
         if(context.player.options.handleClick) {
+            context.CanvasElement = context._canvasElement;
             $(context.CanvasElement).on('mousedown', function(e) {
                 if(e.which != 1) {
                     return;
